@@ -1,19 +1,7 @@
 import qrcode
 import sys
 
-# https://dan.hersam.com/tools/gen-qr-code.html
-# https://i.imgur.com/bN86wwh.png
-
-# Label: Example
-# User: alice@google.com
-# Key: AABBCC993311ABC
-# Digits: 9 Optional - defaults is 6 digits
-# Period: 60 Optional - defaults is 30 seconds
-
-# The format the Google Authenticator application expects QR data to be stored
-# otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example&digits=9&period=60
-
-IS_DEBUG = True 
+IS_DEBUG = False 
 PROG_NAME = 'gooQR'
 BASE_OTP_SECRET = 'otpauth://totp/%s:%s?secret=%s&issuer=%s'
 BASE_OTP_SECRET_FULL = 'otpauth://totp/%s:%s?secret=%s&issuer=%s&digits=%s&period=%s'
@@ -72,7 +60,7 @@ def create_google_qr_img():
 		return qrcode.make(BASE_OTP_SECRET % (LABEL, USER, SECRET_KEY, LABEL))
 
 def save_image(img):
-	img.save(LABEL + '.png', 'PNG')
+	img.save('DELETE_SECURELY_AFTER_USING.png', 'PNG')
 
 def main():
 	check_args()
