@@ -13,6 +13,7 @@ import sys
 # The format the Google Authenticator application expects QR data to be stored
 # otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example&digits=9&period=60
 
+IS_DEBUG = True 
 PROG_NAME = 'gooQR'
 BASE_OTP_SECRET = 'otpauth://totp/%s:%s?secret=%s&issuer=%s'
 BASE_OTP_SECRET_FULL = 'otpauth://totp/%s:%s?secret=%s&issuer=%s&digits=%s&period=%s'
@@ -36,12 +37,33 @@ def check_args():
 		exit()
 
 def get_args():
+        global LABEL
+        global USER
+        global SECRET_KEY
+        global DIGITS
+        global PERIOD 
+
 	LABEL = sys.argv[1]
 	USER = sys.argv[2]
 	SECRET_KEY = sys.argv[3]
 	if NUM_ARGS == 6:
 		DIGITS = sys.argv[4]
 		PERIOD = sys.argv[5]
+
+def debug_print():
+    global LABEL
+    global USER
+    global SECRET_KEY
+    global DIGITS
+    global PERIOD
+
+    print("sys.argv[0]=" + sys.argv[0])
+    print("sys.argv[1]=" + sys.argv[1])
+    print(LABEL)
+    print(USER)
+    print(SECRET_KEY)
+    print(DIGITS)
+    print(PERIOD)
 
 def create_google_qr_img():
 	if NUM_ARGS == 6:
@@ -50,11 +72,12 @@ def create_google_qr_img():
 		return qrcode.make(BASE_OTP_SECRET % (LABEL, USER, SECRET_KEY, LABEL))
 
 def save_image(img):
-	img.save(LABEL, 'PNG')  # PNG is capitalized for this argument (does it need to be?), but the file is saved as lowercase .png
+	img.save(LABEL + '.png', 'PNG')
 
 def main():
 	check_args()
 	get_args()
+        if(IS_DEBUG): debug_print()
 	img = create_google_qr_img()
 	save_image(img)
 	print('Everything looks good... Go ahead and try scanning your new barcode! :)')
